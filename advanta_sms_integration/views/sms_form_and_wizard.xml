@@ -1,0 +1,33 @@
+<odoo>
+    <data>
+
+        <!-- Inheriting the sms.sms_tsms_view_form view -->
+        <record id="view_sms_tsms_form_inherit" model="ir.ui.view">
+            <field name="name">sms.sms_tsms_view_form.inherit</field>
+            <field name="model">sms.sms</field>
+            <field name="inherit_id" ref="sms.sms_tsms_view_form" />  <!-- Reference to the original
+            view -->
+            <field name="arch" type="xml">
+                <!-- Target the group that contains the body field -->
+                <xpath expr="//group[field[@name='body']]" position="inside">
+                    <!-- Add the sms_account_id field next to the body field -->
+                    <field name="sms_account_id" widget="many2one" options="{'no_create': True}"
+                        domain="[('active', '=', 'True')]" />
+                </xpath>
+            </field>
+        </record>
+
+        <record id="view_mail_mass_mailing_form_inherit_sms_account" model="ir.ui.view">
+            <field name="name">mass.mailing.form.inherit.sms.account</field>
+            <field name="model">mailing.mailing</field>
+            <field name="inherit_id" ref="mass_mailing.view_mail_mass_mailing_form" />
+            <field name="arch" type="xml">
+                <xpath expr="//div[@name='mailing_model_id_container']" position="after">
+                    <field name="sms_account_id" invisible="mailing_type != 'sms'" required="1" />
+                </xpath>
+            </field>
+        </record>
+
+
+    </data>
+</odoo>
